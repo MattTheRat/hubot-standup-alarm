@@ -94,6 +94,9 @@ module.exports = function(robot) {
     // Fires the standup message.
     function doStandup(room) {
         var message = _.sample(STANDUP_MESSAGES);
+        if (robot.adapterName == "hipchat") {
+            message = "@here " + message;
+        }
         robot.messageRoom(room, message);
     }
 
