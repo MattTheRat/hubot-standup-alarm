@@ -3,8 +3,10 @@
 //   hh:mm must be in the same timezone as the server Hubot is on. Probably UTC.
 //
 //   This is configured to work for Hipchat. You may need to change the 'create standup' command
-//   to match the adapter you're using.
-
+//   to match the STANDUP_ALERTou're using.
+//
+// Configuration:
+//   HUBOT_STANDUP_ALERT
 //
 // Commands:
 //   hubot standup help - See a help document explaining how to use.
@@ -32,6 +34,8 @@ module.exports = function(robot) {
         "Standup time. Get up, humans",
         "Standup time! Now! Go go go!"
     ];
+    
+    var STANDUP_ALERT = process.env.HUBOT_STANDUP_ALERT || "";
 
     // Check for standups that need to be fired, once a minute
     // Monday to Friday.
@@ -94,8 +98,8 @@ module.exports = function(robot) {
     // Fires the standup message.
     function doStandup(room) {
         var message = _.sample(STANDUP_MESSAGES);
-        if (robot.adapterName == "hipchat") {
-            message = "@here " + message;
+        if (STANDUP_ALERT) {
+            message = STANDUP_ALERT + message;
         }
         robot.messageRoom(room, message);
     }
